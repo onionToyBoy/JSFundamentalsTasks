@@ -82,3 +82,29 @@ function take(arr, number) {
 	}
 	return result;
 }
+
+function asChain(arr) {
+	const newObj = {
+		skip(number) {
+			const result = [];
+			for (let i = number; i < this.arr.length; i++) {
+				result.push(arr[i]);
+			}
+			this.arr = result;
+			return this;
+		},
+		take(number) {
+			const result = [];
+			for (let i = 0; i < number; i++) {
+				result.push(this.arr[i]);
+			}
+			this.arr = result;
+			return this;
+		},
+		getArr() {
+			return this.arr;
+		},
+	};
+	newObj.arr = arr;
+	return newObj;
+}
