@@ -4,33 +4,33 @@ const rangeError = new RangeError(
 );
 
 function isArray(obj) {
-	const result = obj.__proto__ === Array.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === Array.prototype;
 }
 
 function isBoolean(obj) {
-	const result = obj.__proto__ === Boolean.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === Boolean.prototype;
 }
 
 function isDate(obj) {
-	const result = obj.__proto__ === Date.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === Date.prototype;
 }
 
 function isNumber(obj) {
-	const result = obj.__proto__ === Number.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === Number.prototype;
 }
 
 function isString(obj) {
-	const result = obj.__proto__ === String.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === String.prototype;
 }
 
 function isFunction(obj) {
-	const result = obj.__proto__ === Function.prototype ? true : false;
-	return result;
+	if (obj == null) return false;
+	return obj.__proto__ === Function.prototype;
 }
 
 function isUndefined(obj) {
@@ -44,21 +44,23 @@ function isNull(obj) {
 }
 
 function first(arr) {
+	if (!isArray(arr)) return typeError;
 	return arr[0];
 }
 
 function last(arr) {
+	if (!isArray(arr)) return typeError;
 	return arr[arr.length - 1];
 }
 
 function skip(arr, number) {
-	if (number < 0 || number >= arr.length) {
-		console.error(rangeError);
-		return rangeError;
-	}
 	if (!isArray(arr) || !isNumber(number)) {
 		console.error(typeError);
 		return typeError;
+	}
+	if (number < 0 || number >= arr.length) {
+		console.error(rangeError);
+		return rangeError;
 	}
 	const result = [];
 	for (let i = number; i < arr.length; i++) {
@@ -68,13 +70,13 @@ function skip(arr, number) {
 }
 
 function take(arr, number) {
-	if (number < 0 || number >= arr.length) {
-		console.error(rangeError);
-		return rangeError;
-	}
 	if (!isArray(arr) || !isNumber(number)) {
 		console.error(typeError);
 		return typeError;
+	}
+	if (number < 0 || number >= arr.length) {
+		console.error(rangeError);
+		return rangeError;
 	}
 	const result = [];
 	for (let i = 0; i < number; i++) {
@@ -84,27 +86,29 @@ function take(arr, number) {
 }
 
 function asChain(arr) {
+	if (!isArray(arr)) return typeError;
 	const newObj = {
+		array: arr,
+
 		skip(number) {
 			const result = [];
-			for (let i = number; i < this.arr.length; i++) {
-				result.push(arr[i]);
+			for (let i = number; i < this.array.length; i++) {
+				result.push(this.array[i]);
 			}
-			this.arr = result;
+			this.array = result;
 			return this;
 		},
 		take(number) {
 			const result = [];
 			for (let i = 0; i < number; i++) {
-				result.push(this.arr[i]);
+				result.push(this.array[i]);
 			}
-			this.arr = result;
+			this.array = result;
 			return this;
 		},
 		getArr() {
-			return this.arr;
+			return this.array;
 		},
 	};
-	newObj.arr = arr;
 	return newObj;
 }
