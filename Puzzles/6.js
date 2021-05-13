@@ -3,11 +3,13 @@ const typeError = new TypeError('invalid argument');
 function averageOfEven(arr) {
 	if (arr.__proto__ !== Array.prototype) return typeError;
 	let size = 0;
-	const evens = arr
-		.filter((el) => el % 2 === 0)
-		.reduce((acc, el) => {
+	let result = 0;
+	arr.forEach((el) => {
+		if (el % 2 === 0) {
 			size++;
-			return acc + el;
-		}, 0);
-	return evens / size;
+			result += el;
+		}
+	});
+
+	return result / size;
 }
